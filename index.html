@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CozyGlow | متجر البيجامات والأرواب</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- 1. شريط الإعلان أعلى الصفحة تماماً -->
+  <div class="top-announcement-bar">
+    <span>🚚 التوصيل متوفر لجميع الولايات (58 ولاية) | الدفع عند الاستلام 🌸✨</span>
+  </div>
+
+  <!-- 2. خلفية الأشكال المتحركة -->
+  <div class="floating-bg" id="floatingBg"></div>
+
+  <!-- 3. شريط التنقل العلوي -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <span class="brand-icon">🎀</span>
+        <span class="brand-name">CozyGlow</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#hero">الرئيسية</a></li>
+        <li><a href="#products">التصنيفات</a></li>
+        <li><a href="#order">طلب سريع</a></li>
+      </ul>
+      <div class="cart-icon" onclick="toggleCartModal()" style="cursor: pointer;">
+        <i data-lucide="shopping-bag"></i>
+        <span class="cart-badge" id="cartCount">0</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 4. القسم الرئيسي Hero -->
+  <section class="hero-section" id="hero">
+    <div class="hero-content">
+      <span class="tag">الموسم الجديد 🌸</span>
+      <h1>راحة نومكِ تبدأ من <span class="highlight">أناقتكِ</span></h1>
+      <p>بيجامات وأرواب مصممة لتمنحكِ الراحة والنعومة التامة في كل لحظة.</p>
+      <a href="#products" class="btn-primary">اكتشفي التشكيلة ✨</a>
+    </div>
+    <div class="hero-image">
+      <img src="images/ared.jpg" alt="بيجامات أنيقة">
+    </div>
+  </section>
+
+  <!-- 5. قسم التصنيفات والمنتجات -->
+  <section class="products-section" id="products">
+    <div class="section-title">
+      <h2>أحدث المجموعات</h2>
+      <p>اختاري القطعة التي تناسب ذوقكِ وراحتكِ</p>
+    </div>
+
+    <!-- أزرار الفلترة -->
+    <div class="category-filters">
+      <button class="filter-btn active" onclick="filterCategory('all', this)">الكل 🌸</button>
+      <button class="filter-btn" onclick="filterCategory('satin', this)">طقم ستان حريري</button>
+      <button class="filter-btn" onclick="filterCategory('shorts', this)">طقم شورت</button>
+      <button class="filter-btn" onclick="filterCategory('cotton', this)">بيجامة قطن</button>
+      <button class="filter-btn" onclick="filterCategory('robes', this)">روب نوم</button>
+      <button class="filter-btn" onclick="filterCategory('bridal', this)">طقم عروس 👑</button>
+    </div>
+
+    <!-- كروت المنتجات الـ 6 الرئيسية -->
+    <div class="product-grid">
+
+      <!-- 1. طقم ستان حريري -->
+      <div class="product-card" data-category="satin">
+        <div class="img-box">
+          <img src="images/download (76) روب نوم.jpg" alt="طقم ستان حريري">
+          <span class="badge">الأكثر طلباً 🔥</span>
+        </div>
+        <div class="product-info">
+          <h3>طقم ستان حريري</h3>
+          <p class="price">4,200 دج</p>
+          <div class="card-buttons">
+            <button class="preview-btn" onclick="openPreviewModal('satin')">معاينة وتفاصيل 👁️</button>
+            <button class="add-to-cart" onclick="addToCart('طقم ستان حريري')">
+              <i data-lucide="heart"></i> إضافة إلى السلة
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. طقم شورت -->
+      <div class="product-card" data-category="shorts">
+        <div class="img-box">
+          <img src="images/بيجامة صوف شورط.jpg" alt="طقم شورت">
+          <span class="badge">خفيف ومريح ✨</span>
+        </div>
+        <div class="product-info">
+          <h3>طقم شورت</h3>
+          <p class="price">3,500 دج</p>
+          <div class="card-buttons">
+            <button class="preview-btn" onclick="openPreviewModal('shorts')">معاينة وتفاصيل 👁️</button>
+            <button class="add-to-cart" onclick="addToCart('طقم شورت')">
+              <i data-lucide="heart"></i> إضافة إلى السلة
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. بيجامة قطن -->
+      <div class="product-card" data-category="cotton">
+        <div class="img-box">
+          <img src="images/بيجامة قطن 1.jpg" alt="بيجامة قطن">
+          <span class="badge new">جديد ✨</span>
+        </div>
+        <div class="product-info">
+          <h3>بيجامة قطن</h3>
+          <p class="price">3,800 دج</p>
+          <div class="card-buttons">
+            <button class="preview-btn" onclick="openPreviewModal('cotton')">معاينة وتفاصيل 👁️</button>
+            <button class="add-to-cart" onclick="addToCart('بيجامة قطن')">
+              <i data-lucide="heart"></i> إضافة إلى السلة
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. روب نوم -->
+      <div class="product-card" data-category="robes">
+        <div class="img-box">
+          <img src="images/download (78)روب نوم.jpg" alt="روب نوم">
+          <span class="badge">أنيق 🌸</span>
+        </div>
+        <div class="product-info">
+          <h3>روب نوم</h3>
+          <p class="price">4,500 دج</p>
+          <div class="card-buttons">
+            <button class="preview-btn" onclick="openPreviewModal('robes')">معاينة وتفاصيل 👁️</button>
+            <button class="add-to-cart" onclick="addToCart('روب نوم')">
+              <i data-lucide="heart"></i> إضافة إلى السلة
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. طقم عروس -->
+      <div class="product-card" data-category="bridal">
+        <div class="img-box">
+          <img src="images/download (77) عرايس.jpg" alt="طقم عروس">
+          <span class="badge">للعرائس 👑</span>
+        </div>
+        <div class="product-info">
+          <h3>طقم عروس</h3>
+          <p class="price">8,900 دج</p>
+          <div class="card-buttons">
+            <button class="preview-btn" onclick="openPreviewModal('bridal')">معاينة وتفاصيل 👁️</button>
+            <button class="add-to-cart" onclick="addToCart('طقم عروس')">
+              <i data-lucide="heart"></i> إضافة إلى السلة
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6. استمارة الطلب السريع -->
+  <section class="order-section" id="order">
+    <div class="order-card">
+      <h2>استمارة الطلب السريع 🛍️</h2>
+      <p>املئي معلوماتكِ وسنتصل بكِ مباشرة لتأكيد الطلب وتوصيله لباب منزلكِ</p>
+      
+      <form id="orderForm">
+        <div class="form-group">
+          <label>الاسم الكامل:</label>
+          <input type="text" placeholder="مثال: سارة بن علي" required>
+        </div>
+        <div class="form-group">
+          <label>رقم الهاتف:</label>
+          <input type="tel" placeholder="05 / 06 / 07..." required>
+        </div>
+        <div class="form-group">
+          <label>الولاية / العنوان:</label>
+          <input type="text" placeholder="الولاية والبلدية..." required>
+        </div>
+        <div class="form-group">
+          <label>المنتجات المختارة:</label>
+          <input type="text" placeholder="اسم القطعة أو تفاصيل السلة..." required>
+        </div>
+        <button type="submit" class="btn-submit">تأكيد الطلب الآن 🌸</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 7. نافذة المعاينة والتفاصيل المنبثقة -->
+  <div class="modal-overlay" id="previewModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closePreviewModal()">×</button>
+      <h3 id="modalTitle">الموديلات المتوفرة</h3>
+      
+      <div class="preview-thumbs-grid" id="modalThumbs"></div>
+
+      <p class="modal-desc" id="modalDesc">تشكيلة مميزة وعصرية تناسب جميع الأذواق لإطلالة نوم مريحة وساحرة.</p>
+      <button class="modal-action-btn" onclick="orderSelectedCategory()">طلب هذا الصنف الآن 🌸</button>
+    </div>
+  </div>
+
+  <!-- 8. لوحة السلة الجانبية التفاعلية -->
+  <div class="cart-sidebar-overlay" id="cartOverlay" onclick="toggleCartModal()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>سلة المشتريات 🛍️</h3>
+      <button class="close-cart-btn" onclick="toggleCartModal()">×</button>
+    </div>
+
+    <div class="cart-items" id="cartItemsContainer">
+      <p class="empty-cart-msg">السلة فارغة حالياً 🌸</p>
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>المجموع الإجمالي:</span>
+        <span id="cartTotalPrice">0 دج</span>
+      </div>
+      <button class="checkout-btn" onclick="checkoutFromCart()">إتمام الطلب الآن ✨</button>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

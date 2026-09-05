@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم الإدارية | Cozy Glow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --primary: #d48b97;
+      --primary-dark: #b86b78;
+      --bg: #fffafb;
+      --card-bg: #ffffff;
+      --text: #4a3b32;
+      --text-muted: #8c7a70;
+      --border: #f3e6e8;
+      --success: #48bb78;
+      --warning: #ed8936;
+      --danger: #e53e3e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #loginScreen {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(212, 139, 151, 0.15);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-card h2 {
+      margin-bottom: 0.5rem;
+      color: var(--primary-dark);
+    }
+
+    .login-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+      text-align: right;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      font-size: 0.95rem;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary);
+    }
+
+    .btn-main {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-main:hover {
+      background: var(--primary-dark);
+    }
+
+    #adminDashboard {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .btn-outline {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    .btn-logout {
+      color: var(--danger);
+      border-color: rgba(229, 62, 62, 0.2);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      position: relative;
+    }
+
+    .tab-btn.active {
+      color: var(--primary-dark);
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.6rem;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--primary-dark);
+      border-radius: 3px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: rgba(212, 139, 151, 0.15);
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-info h3 {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .stat-info p {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .card-table {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin-bottom: 2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+    }
+
+    th, td {
+      padding: 1rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    th {
+      color: var(--text-muted);
+      background: var(--bg);
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .btn-toggle {
+      color: var(--primary-dark);
+      background: rgba(212, 139, 151, 0.1);
+      margin-left: 0.3rem;
+    }
+
+    .btn-delete {
+      color: var(--danger);
+      background: rgba(229, 62, 62, 0.1);
+    }
+
+    .status-badge {
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .status-pending { background: #feebc8; color: var(--warning); }
+    .status-done { background: #c6f6d5; color: var(--success); }
+
+    .products-manager-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .prod-edit-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .prod-edit-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loginScreen">
+    <div class="login-card">
+      <h2>تسجيل دخول الإدارة 🔐</h2>
+      <p>أدخلي كلمة المرور للوصول إلى لوحة التحكم</p>
+      <form id="adminLoginForm">
+        <div class="form-group">
+          <label>كلمة المرور:</label>
+          <input type="password" id="adminPassword" placeholder="اكتبي كلمة المرور هنا..." required>
+        </div>
+        <button type="submit" class="btn-main">دخول اللوحة</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="adminDashboard">
+    <header>
+      <div class="brand">
+        <i data-lucide="shield-check"></i> Cozy Glow | الإدارة
+      </div>
+      <div class="header-actions">
+        <a href="index.html" class="btn-outline"><i data-lucide="store"></i> زيارة المتجر</a>
+        <button class="btn-outline btn-logout" onclick="logoutAdmin()"><i data-lucide="log-out"></i> خروج</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('ordersTab', this)">📦 سجل الطلبات</button>
+        <button class="tab-btn" onclick="switchTab('productsTab', this)">🏷️ إدارة المنتجات والأسعار</button>
+      </div>
+      <div id="ordersTab" class="tab-content active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon"><i data-lucide="shopping-bag"></i></div>
+            <div class="stat-info">
+              <h3>إجمالي الطلبات</h3>
+              <p id="totalOrders">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i data-lucide="clock"></i></div>
+            <div class="stat-info">
+              <h3>طلبات قيد الانتظار</h3>
+              <p id="pendingOrders">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i data-lucide="check-circle"></i></div>
+            <div class="stat-info">
+              <h3>طلبات مؤكدة ومكتملة</h3>
+              <p id="completedOrders">0</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-table">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2>الطلبات الواردة من المتجر 🛍️</h2>
+            <button class="action-btn btn-delete" onclick="clearAllOrders()">مسح كل السجل</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>الزبونة</th>
+                <th>رقم الهاتف</th>
+                <th>الولاية</th>
+                <th>المنتج المطلوب</th>
+                <th>التاريخ</th>
+                <th>الحالة</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTbody"></tbody>
+          </table>
+          <p id="emptyOrderMsg" style="text-align: center; color: var(--text-muted); padding: 2rem; display: none;">لا توجد أي طلبات واردة حتى الآن 🌸</p>
+        </div>
+      </div>
+
+      <div id="productsTab" class="tab-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2>تعديل أسعار وموديلات المتجر</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">التعديل هنا يُحفظ فوراً في المتجر بدون الحاجة للدخول للأكواد.</p>
+          </div>
+          <button class="btn-outline" onclick="resetDefaultProducts()">🔄 استعادة البيانات الأصلية</button>
+        </div>
+
+        <div class="products-manager-grid" id="productsManagerContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var ADMIN_PASS = "admin";
+
+    var defaultData = {
+      satin: {
+        title: "طقم ستان حريري 🌸",
+        desc: "تشكيلة حريرية فاخرة وناعمة تمنحكِ الراحة والأناقة التامة في أوقات استرخائكِ.",
+        models: [
+          { name: "طقم ستان 1", price: 4200, image: "images/Satin 1.jpg" },
+          { name: "طقم ستان 2", price: 4600, image: "images/Satin 2.jpg" },
+          { name: "طقم ستان 3", price: 3800, image: "images/Satin 3.jpg" },
+          { name: "طقم ستان 4", price: 4900, image: "images/Satin 4.jpg" }
+        ]
+      },
+      shorts: {
+        title: "طقم شورت خفيف ✨",
+        desc: "أطقم شورت قطنية خفيفة ومريحة مصممة للأوقات المنزلية اليومية.",
+        models: [
+          { name: "طقم شورت 1", price: 3500, image: "images/cotton_short 1.jpg" },
+          { name: "طقم شورت 2", price: 3200, image: "images/cotton_short 2.jpg" },
+          { name: "طقم شورت 3", price: 3600, image: "images/cotton_short 3.jpg" },
+          { name: "طقم شورت 4", price: 3400, image: "images/cotton_short 4.jpg" }
+        ]
+      },
+      cotton: {
+        title: "بيجامة قطن ناعمة 🌿",
+        desc: "بيجامات قطنية أصلية 100% عالية الجودة توفر لكِ أقصى درجات الانتعاش والراحة.",
+        models: [
+          { name: "بيجامة قطن 1", price: 3800, image: "images/coton 1.jpg" },
+          { name: "بيجامة قطن 2", price: 3600, image: "images/coton 2.jpg" },
+          { name: "بيجامة قطن 3", price: 3900, image: "images/coton 3.jpg" },
+          { name: "بيجامة قطن 4", price: 3700, image: "images/coton 4.jpg" }
+        ]
+      },
+      robes: {
+        title: "روب نوم راقي 👘",
+        desc: "أرواب نوم بأقمشة خفيفة وأنيقة مع أحزمة متناسقة لتكمل إطلالتكِ المسائية.",
+        models: [
+          { name: "روب نوم 1", price: 4500, image: "images/robe 1.jpg" },
+          { name: "روب نوم 2", price: 3900, image: "images/robe 2.jpg" },
+          { name: "روب نوم 3", price: 4800, image: "images/robe 3.jpg" },
+          { name: "روب نوم 4", price: 5200, image: "images/robe 4.jpg" }
+        ]
+      },
+      bridal: {
+        title: "طقم عروس ملكي 👑",
+        desc: "تشكيلة حصرية مصممة خصيصاً لجهاز العرائس بأفخم الأقمشة والتطريزات.",
+        models: [
+          { name: "طقم عروس 1", price: 5000, image: "images/bridel1.jpg" },
+          { name: "طقم عروس 2", price: 4000, image: "images/bridel2.jpg" },
+          { name: "طقم عروس 3", price: 5000, image: "images/bridel3.jpg" },
+          { name: "طقم عروس 4", price: 7000, image: "images/bridel4.jpg" }
+        ]
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", function() {
+      if (sessionStorage.getItem("isCozyAdminLoggedIn") === "true") {
+        showDashboard();
+      }
+      
+      var form = document.getElementById("adminLoginForm");
+      if (form) {
+        form.addEventListener("submit", function(e) {
+          e.preventDefault();
+          var pass = document.getElementById("adminPassword").value;
+          if (pass === ADMIN_PASS) {
+            sessionStorage.setItem("isCozyAdminLoggedIn", "true");
+            showDashboard();
+          } else {
+            alert("كلمة المرور غير صحيحة ❌");
+          }
+        });
+      }
+    });
+
+    function showDashboard() {
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("adminDashboard").style.display = "flex";
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+      loadOrders();
+      loadProductManager();
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem("isCozyAdminLoggedIn");
+      location.reload();
+    }
+
+    function switchTab(tabId, btn) {
+      var tabs = document.querySelectorAll(".tab-btn");
+      var contents = document.querySelectorAll(".tab-content");
+      tabs.forEach(function(b) { b.classList.remove("active"); });
+      contents.forEach(function(c) { c.classList.remove("active"); });
+      btn.classList.add("active");
+      document.getElementById(tabId).classList.add("active");
+    }
+
+    function loadOrders() {
+      var orders = JSON.parse(localStorage.getItem("cozyGlowOrders") || "[]");
+      var tbody = document.getElementById("ordersTbody");
+      var emptyMsg = document.getElementById("emptyOrderMsg");
+      
+      tbody.innerHTML = "";
+      var pendingCount = 0;
+      var completedCount = 0;
+
+      if (orders.length === 0) {
+        emptyMsg.style.display = "block";
+      } else {
+        emptyMsg.style.display = "none";
+        orders.forEach(function(order, index) {
+          if (order.status === "completed") {
+            completedCount++;
+          } else {
+            pendingCount++;
+          }
+
+          var isDone = order.status === "completed";
+          var statusBadge = isDone ? "مكتمل ✅" : "قيد الانتظار ⏳";
+          var statusClass = isDone ? "status-done" : "status-pending";
+          var toggleText = isDone ? "تعيين كمعلق" : "تأكيد الطلب";
+
+          var tr = document.createElement("tr");
+          tr.innerHTML = 
+            "<td><strong>#" + (index + 1) + "</strong></td>" +
+            "<td>" + (order.name || "-") + "</td>" +
+            "<td dir='ltr' style='text-align: right;'>" + (order.phone || "-") + "</td>" +
+            "<td>" + (order.state || order.address || "-") + "</td>" +
+            "<td><strong>" + (order.product || "-") + "</strong></td>" +
+            "<td>" + (order.date || "-") + "</td>" +
+            "<td><span class='status-badge " + statusClass + "'>" + statusBadge + "</span></td>" +
+            "<td>" +
+              "<button class='action-btn btn-toggle' onclick='toggleOrderStatus(" + index + ")'>" + toggleText + "</button>" +
+              "<button class='action-btn btn-delete' onclick='deleteOrder(" + index + ")'>حذف</button>" +
+            "</td>";
+          tbody.appendChild(tr);
+        });
+      }
+
+      document.getElementById("totalOrders").textContent = orders.length;
+      document.getElementById("pendingOrders").textContent = pendingCount;
+      document.getElementById("completedOrders").textContent = completedCount;
+    }
+
+    function toggleOrderStatus(index) {
+      var orders = JSON.parse(localStorage.getItem("cozyGlowOrders") || "[]");
+      if (orders[index]) {
+        orders[index].status = (orders[index].status === "completed") ? "pending" : "completed";
+        localStorage.setItem("cozyGlowOrders", JSON.stringify(orders));
+        loadOrders();
+      }
+    }
+
+    function deleteOrder(index) {
+      if (confirm("هل تريدين حذف هذا الطلب؟")) {
+        var orders = JSON.parse(localStorage.getItem("cozyGlowOrders") || "[]");
+        orders.splice(index, 1);
+        localStorage.setItem("cozyGlowOrders", JSON.stringify(orders));
+        loadOrders();
+      }
+    }
+
+    function clearAllOrders() {
+      if (confirm("هل أنتِ متأكدة من حذف كل سجل الطلبات؟")) {
+        localStorage.removeItem("cozyGlowOrders");
+        loadOrders();
+      }
+    }
+
+    function loadProductManager() {
+      var container = document.getElementById("productsManagerContainer");
+      var data = JSON.parse(localStorage.getItem("cozyGlowCategoryData")) || defaultData;
+      container.innerHTML = "";
+
+      Object.keys(data).forEach(function(catKey) {
+        var category = data[catKey];
+        category.models.forEach(function(model, mIndex) {
+          var card = document.createElement("div");
+          card.className = "prod-edit-card";
+          card.innerHTML = 
+            "<img src='" + model.image + "' alt='" + model.name + "'>" +
+            "<h4 style='color: var(--primary-dark);'>" + category.title + "</h4>" +
+            "<div class='form-group'>" +
+              "<label>اسم الموديل:</label>" +
+              "<input type='text' id='name_" + catKey + "_" + mIndex + "' value='" + model.name + "'>" +
+            "</div'>" +
+            "<div class='form-group'>" +
+              "<label>السعر (دج):</label>" +
+              "<input type='number' id='price_" + catKey + "_" + mIndex + "' value='" + model.price + "'>" +
+            "</div>" +
+            "<button class='btn-main' style='padding: 0.5rem;' onclick='saveSingleProduct(\"" + catKey + "\", " + mIndex + ")'>💾 حفظ التعديل</button>";
+          container.appendChild(card);
+        });
+      });
+    }
+
+    function saveSingleProduct(catKey, mIndex) {
+      var data = JSON.parse(localStorage.getItem("cozyGlowCategoryData")) || defaultData;
+      var newName = document.getElementById("name_" + catKey + "_" + mIndex).value;
+      var newPrice = Number(document.getElementById("price_" + catKey + "_" + mIndex).value);
+
+      if (data[catKey] && data[catKey].models[mIndex]) {
+        data[catKey].models[mIndex].name = newName;
+        data[catKey].models[mIndex].price = newPrice;
+        localStorage.setItem("cozyGlowCategoryData", JSON.stringify(data));
+        alert("تم تحديث المنتج وحفظه في المتجر بنجاح! 🌸");
+      }
+    }
+
+    function resetDefaultProducts() {
+      if (confirm("هل تريدين استرجاع الأسماء والأسعار الأصلية للمتجر؟")) {
+        localStorage.removeItem("cozyGlowCategoryData");
+        loadProductManager();
+        alert("تمت استعادة البيانات الافتراضية بنجاح 🌸");
+      }
+    }
+  </script>
+</body>
+</html>
